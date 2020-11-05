@@ -1,6 +1,6 @@
 # Configure basic application and c++ version infromation
 TEMPLATE = app
-QT +=  core gui network xml
+QT +=  core gui network xml widgets
 CONFIG += c++14
 DESTDIR = bin
 
@@ -14,6 +14,13 @@ VERSIONS = $$split(VERSION, ".")
 DEFINES += MAJOR_VERSION=$$member(VERSIONS, 0)
 DEFINES += MINOR_VERSION=$$member(VERSIONS, 1)
 DEFINES += REVISION=$$member(VERSIONS, 2)
+
+# Set application icon for all platforms
+RC_ICONS = res/Sync-my-L2P.ico
+RC_FILE = res/Sync-my-L2P.rc
+ICON = res/Sync-my-L2P.icns
+
+QMAKE_INFO_PLIST = res/Info.plist.app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -56,15 +63,13 @@ RESOURCES += \
     res/icons/icons.qrc \
     res/lang/translation.qrc
 
-# Include rc file
-RC_FILE = res/icon.rc
-
 # Include other files to be displayed in qt creator
 OTHER_FILES += \
     res/Sync-my-L2P.icns \
+    res/Sync-my-L2P.rc \
     README.md \
     COPYING.LESSER \
-    res/magnifier.ico \
+    res/Sync-my-L2P.ico \
     LICENSE \
-    .gitignore
-
+    .gitignore \
+    res/Info.plist.app

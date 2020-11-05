@@ -19,6 +19,8 @@
 #include "ui_dateidownloader.h"
 #include "math.h"
 
+#include <QTime>
+
 #include "qslog/QsLog.h"
 
 FileDownloader::FileDownloader(int itemNumber,

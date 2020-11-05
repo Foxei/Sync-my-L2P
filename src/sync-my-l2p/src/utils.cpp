@@ -250,9 +250,9 @@ Structureelement *Utils::getDirectoryItem(Structureelement *courseItem, QStringL
 /// Zentrieren eines Fenster auf dem Desktops
 void Utils::centerWidgetOnDesktop(QWidget *widget)
 {
-    QRect desktopRect = QApplication::desktop()->screenGeometry();
-    QRect windowRect  = widget->frameGeometry();
-    widget->move((desktopRect.width()-windowRect.width())/2+desktopRect.x(), (desktopRect.height()-windowRect.height())/2+desktopRect.y());
+    //QRect desktopRect = QApplication::desktop()->screenGeometry();
+    //QRect windowRect  = widget->frameGeometry();
+    //widget->move((desktopRect.width()-windowRect.width())/2+desktopRect.x(), (desktopRect.height()-windowRect.height())/2+desktopRect.y());
 }
 
 /// Überprüfung aller Dateien, ob diese auf der Festplatte bereits existieren
