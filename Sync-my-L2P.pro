@@ -1,77 +1,70 @@
-QT     += core gui network xml
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-CONFIG += c++11
-
-TARGET = Sync-my-L2P
+# Configure basic application and c++ version infromation
 TEMPLATE = app
+QT +=  core gui network xml
+CONFIG += c++14
 DESTDIR = bin
 
-SOURCES += \
-    src/main.cpp \
-    src/autoclosedialog.cpp \
-    src/browser.cpp \
-    src/filedownloader.cpp \
-    src/info.cpp \
-    src/l2pitemmodel.cpp \
-    src/logger.cpp \
-    src/login.cpp \
-    src/logindialog.cpp \
-    src/message.cpp \
-    src/mymainwindow.cpp \
-    src/mysortfilterproxymodel.cpp \
-    src/options.cpp \
-    src/parser.cpp \
-    src/structureelement.cpp \
-    src/utils.cpp
+# Define application name
+TARGET = Sync-my-L2P
 
-INCLUDEPATH += include/
-HEADERS  += \
-    include/clientId.h \
-    include/autoclosedialog.h \
-    include/browser.h \
-    include/clientId.h \
-    include/filedownloader.h \
-    include/info.h \
-    include/l2pitemmodel.h \
-    include/logger.h \
-    include/login.h \
-    include/logindialog.h \
-    include/message.h \
-    include/mymainwindow.h \
-    include/mysortfilterproxymodel.h \
-    include/options.h \
-    include/parser.h \
-    include/structureelement.h \
-    include/urls.h \
-    include/utils.h
+# Define version and all following subversions to enriche the
+# meta information provided to the os.
+VERSION = 2.4.2
+VERSIONS = $$split(VERSION, ".")
+DEFINES += MAJOR_VERSION=$$member(VERSIONS, 0)
+DEFINES += MINOR_VERSION=$$member(VERSIONS, 1)
+DEFINES += REVISION=$$member(VERSIONS, 2)
 
+# The following define makes your compiler emit warnings if you use
+# any feature of Qt which as been marked deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
+
+# You can also make your code fail to compile if you use deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+# Include all source and header files from this application
+include(src/sync-my-l2p/Sync-my-L2p.pri)
+
+# Include all source and header files from qslog as thirdparty lib
+include(src/qslog/QsLog.pri)
+
+# Include all gui files
 FORMS += \
-    gui/autoclosedialog.ui \
-    gui/browser.ui \
-    gui/dateidownloader.ui \
-    gui/info.ui \
-    gui/logger.ui \
-    gui/logindialog.ui \
-    gui/message.ui \
-    gui/mymainwindow.ui \
-    gui/options.ui
+    res/gui/autoclosedialog.ui \
+    res/gui/browser.ui \
+    res/gui/dateidownloader.ui \
+    res/gui/info.ui \
+    res/gui/logger.ui \
+    res/gui/logindialog.ui \
+    res/gui/message.ui \
+    res/gui/mymainwindow.ui \
+    res/gui/options.ui
 
-TRANSLATIONS = lang/sync-my-l2p_de.ts \
-               lang/sync-my-l2p_en.ts \
-               lang/sync-my-l2p_lb.ts \
-               lang/sync-my-l2p_sq.ts
+# Include all translation files
+TRANSLATIONS = \
+    res/lang/sync-my-l2p_de.ts \
+    res/lang/sync-my-l2p_en.ts \
+    res/lang/sync-my-l2p_lb.ts \
+    res/lang/sync-my-l2p_sq.ts
 
+# Include all resources files
 RESOURCES += \
-    icons/icons.qrc \
-    lang/translation.qrc
+    res/icons/icons.qrc \
+    res/lang/translation.qrc
 
-RC_FILE = icon.rc
+# Include rc file
+RC_FILE = res/icon.rc
 
+# Include other files to be displayed in qt creator
 OTHER_FILES += \
-    Sync-my-L2P.icns \
+    res/Sync-my-L2P.icns \
     README.md \
-    magnifier.ico \
+    COPYING.LESSER \
+    res/magnifier.ico \
     LICENSE \
     .gitignore
 
-include(qslog/QsLog.pri)
