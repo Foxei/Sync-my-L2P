@@ -32,10 +32,8 @@ void BrowserTabWidget::setupGui(){
 
   auto *layout_left = new QVBoxLayout;
   auto *layout = new QHBoxLayout;
-  layout_left->setMargin(0);
   layout_left->setContentsMargins(0,0,0,0);
 
-  layout->setMargin(0);
   layout->setContentsMargins(0,0,0,0);
 
   layout_left->addWidget(tab_bar_top_);

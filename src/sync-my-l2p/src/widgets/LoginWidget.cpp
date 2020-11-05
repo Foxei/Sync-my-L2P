@@ -50,7 +50,7 @@ void LoginWidget::setupGui() {
   dialog_layout->addWidget(login_button_,2, Qt::AlignCenter);
   dialog_layout->addWidget(remember_me_checkbox_, 2, Qt::AlignCenter);
   dialog_layout->addSpacerItem(new QSpacerItem(400,20,QSizePolicy::Minimum, QSizePolicy::Minimum));
-  dialog_layout->setMargin(10);
+  //dialog_layout->setMargin(10);
 
   dialog_container_->setLayout(dialog_layout);
   dialog_container_->setMaximumSize(dialog_container_->sizeHint());

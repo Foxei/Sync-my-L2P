@@ -16,11 +16,11 @@ DEFINES += MINOR_VERSION=$$member(VERSIONS, 1)
 DEFINES += REVISION=$$member(VERSIONS, 2)
 
 # Set application icon for all platforms
-RC_ICONS = res/Sync-my-L2P.ico
-RC_FILE = res/Sync-my-L2P.rc
-ICON = res/Sync-my-L2P.icns
+RC_ICONS = res/frameworks/Sync-my-L2P.ico
+RC_FILE = res/frameworks/Sync-my-L2P.rc
+ICON = res/frameworks/Sync-my-L2P.icns
 
-QMAKE_INFO_PLIST = res/Info.plist.app
+QMAKE_INFO_PLIST = res/frameworks/Info.plist.app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -35,18 +35,19 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 # Include all source and header files from this application
 include(src/sync-my-l2p/Sync-my-L2p.pri)
+include(src/sync-my-l2p-backend/Sync-my-L2p-Backend.pri)
 
 # Include all gui files
 FORMS += \
-    res/gui/autoclosedialog.ui \
-    res/gui/browser.ui \
-    res/gui/dateidownloader.ui \
-    res/gui/info.ui \
-    res/gui/logger.ui \
-    res/gui/logindialog.ui \
-    res/gui/message.ui \
-    res/gui/mymainwindow.ui \
-    res/gui/options.ui
+    #res/gui/autoclosedialog.ui \
+    #res/gui/browser.ui \
+    #res/gui/dateidownloader.ui \
+    #res/gui/info.ui \
+    #res/gui/logger.ui \
+    #res/gui/logindialog.ui \
+    #res/gui/message.ui \
+    #res/gui/mymainwindow.ui \
+    #res/gui/options.ui
 
 # Include all translation files
 TRANSLATIONS = \
@@ -58,15 +59,18 @@ TRANSLATIONS = \
 # Include all resources files
 RESOURCES += \
     res/icons/icons.qrc \
-    res/lang/translation.qrc
+    res/lang/translation.qrc \
+    res/style/style.qrc
 
 # Include other files to be displayed in qt creator
 OTHER_FILES += \
-    res/Sync-my-L2P.icns \
-    res/Sync-my-L2P.rc \
+    res/frameworks/Sync-my-L2P.icns \
+    res/frameworks/Sync-my-L2P.rc \
     README.md \
     COPYING.LESSER \
-    res/Sync-my-L2P.ico \
+    res/frameworks/Sync-my-L2P.ico \
     LICENSE \
     .gitignore \
-    res/Info.plist.app
+    res/frameworks/Info.plist.app \
+    res/gui/stylesheet.qss
+

@@ -10,18 +10,6 @@
     <height>663</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>700</width>
-    <height>0</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>1300</width>
-    <height>16777215</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Sync-my-L²P</string>
   </property>
@@ -29,16 +17,397 @@
    <iconset resource="../icons/icons.qrc">
     <normaloff>:/icons/magnifier.png</normaloff>:/icons/magnifier.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">*
+{
+	font-size: 11pt;
+	font-family: Work Sans;
+}
+
+QWidget[accessibleName=&quot;alternative-background&quot;]
+{
+    background-color: palette(base);
+    border: 1px solid palette(alternate-base);
+
+}
+
+QLabel[accessibleName=&quot;headline&quot;]
+{
+    font-size: 16pt;
+}
+
+QLabel[accessibleName=&quot;description&quot;]
+{
+    font-size: 10pt;
+}
+
+QPushButton:hover:pressed[accessibleName=&quot;button.flat&quot;]
+{
+    border: 0px solid black;
+	background-color: transparent;
+}
+
+QPushButton
+{
+    background: palette(window);
+    font-size: 12pt;
+    border: 1px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QPushButton::hover
+{
+    background: palette(window);
+    font-size: 12pt;
+    border: 2px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QPushButton::pressed
+{
+    background: palette(base);
+    font-size: 12pt;
+    border: 2px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+
+QToolTip
+{
+    border: 1px solid palette(base);
+}
+
+QScrollArea
+{
+    border: 0px solid transparent;
+}
+
+QComboBox
+{
+    background: palette(window);
+    font-size: 12pt;
+    combobox-popup: 0;
+    border: 1px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QComboBox::hover
+{
+    border: 2px solid palette(base);
+}
+QComboBox:drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 0px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+QComboBox:down-arrow{
+    image: url(:down_arrow.png);
+}
+QComboBox QAbstractItemView::item
+{
+    font-size: 12pt;
+    min-height: 35px;
+}
+QComboBox QAbstractItemView {
+    background: palette(window);
+    selection-background-color: palette(highlight);
+}
+QComboBox:editable {
+    background: palette(window);
+}
+
+QLineEdit
+{
+    background: palette(window);
+    font-size: 12pt;
+    combobox-popup: 0;
+    border: 1px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QLineEdit::hover
+{
+    border: 2px solid palette(base);
+}
+
+QSpinBox
+{
+    background: palette(window);
+    font-size: 12pt;
+    combobox-popup: 0;
+    border: 1px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QSpinBox::hover
+{
+    border: 2px solid palette(base);
+}
+QSpinBox:down-arrow
+{
+    image: url(:down_arrow.png);
+}
+QSpinBox:up-arrow
+{
+    image: url(:up_arrow.png);
+}
+QSpinBox:up-button
+{
+    border: 0px solid black;
+	background-color: transparent;
+}
+QSpinBox:down-button
+{
+    border: 0px solid black;
+	background-color: transparent;
+}
+
+QDateEdit
+{
+    background: palette(window);
+    font-size: 12pt;
+    combobox-popup: 0;
+    border: 1px solid palette(base);
+    border-radius: 0;
+    padding: 3px;
+}
+QDateEdit::hover
+{
+    border: 2px solid palette(base);
+}
+QDateEdit:down-arrow
+{
+    image: url(:down_arrow.png);
+}
+QDateEdit:drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 0px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QWidget[accessibleName=&quot;background&quot;]
+{
+    background-color: palette(bright-text);
+}
+
+QScrollBar:vertical {
+    border: 0px solid transparent;
+    width: 10px;
+    margin: 0 0 0 0;
+}
+QScrollBar::handle:vertical {
+    background: palette(highlight);
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical {
+    border: 0px solid transparent;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    border: 0px solid transparent;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    border: 0px solid transparent;
+    width: 3px;
+    height: 3px;
+    background: palette(background);
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QToolButton { /* all types of tool button */
+    border: 1px solid transparent;
+    border-radius: 0;
+    width: 32px;
+    height: 32px;
+}
+QToolButton:hover
+{
+    border: 1px solid palette(base);
+}
+QToolButton:checked
+{
+    border: 1px solid palette(base);
+    background: palette(base);
+}
+QToolButton:pressed
+{
+    border: 1px solid palette(base);
+    background: palette(base);
+}
+
+QStatusBar
+{
+    border-top: 1px solid palette(base);
+    font-size: 10pt;
+}
+
+QSlider::groove:horizontal {
+    height: 2px;
+    background: palette(base);
+}
+
+QSlider::handle:horizontal {
+    background: palette(base);
+    border: 1px solid palette(window);
+    width: 8px;
+    margin: -10px 0px -10px 0px;
+    border-radius: 0px;
+}
+
+QWidget[accessibleName=&quot;popup.background&quot;]
+{
+    background: palette(window);
+    border: 1px solid palette(base);
+}
+
+QLabel[accessibleName=&quot;popup.title&quot;]
+{
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/*################################################## BrowserTabBar ##################################################*/
+
+QTabBar::tab
+{
+    text-align: left;
+    font-size: 11pt;
+    border: 0px solid transparent;
+    border-right: 3px solid transparent;
+    padding: 5px 5px 20px 5px;
+}
+
+QTabBar::tab:first {
+    max-width: 0px;
+    border: 0px solid transparent;
+    padding: 0px;
+}
+
+QTabBar::tab::first::selected
+{
+    color: transparent;
+    border-right: 0px solid transparent;
+    background: transparent;
+}
+
+
+QTabBar::tab::hover
+{
+    background: palette(alternate-base);
+
+}
+
+QTabBar::tab::selected
+{
+    color: palette(highlight);
+    border-right: 3px solid palette(highlight);
+    background: palette(highlighted-text);
+}
+
+/*################################################ LoggingTextEdit #################################################*/
+
+QTextEdit
+{
+    border: 0px solid transparent;
+    background: palette(window);
+}
+
+/*################################################# LoginDialog ####################################################*/
+
+LoginWidget
+{
+    background: rgba(0,0,0,0.5);
+}
+
+LoginWidget .QWidget[accessibleName=&quot;dialog-container&quot;]
+{
+    border: 1px solid palette(base);
+    background: palette(window);
+}
+
+LoginWidget .QPushButton[accessibleName=&quot;login-button&quot;]
+{
+    border: 1px solid palette(highlighted-text);
+    background: palette(highlighted-text);
+    color: palette(highlight);
+    font-size: 16pt;
+}
+
+LoginWidget .QPushButton[accessibleName=&quot;login-button&quot;]::hover
+{
+    border: 1px solid palette(highlight);
+    background: palette(highlighted-text);
+    color: palette(highlight);
+    font-size: 16pt;
+}
+
+LoginWidget .QPushButton[accessibleName=&quot;login-button&quot;]::pressed
+{
+    border: 1px solid palette(highlight);
+    background: palette(base);
+    color: palette(highlight);
+    font-size: 16pt;
+}
+
+
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item row="0" column="1">
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="BrowserTabWidget" name="tabWidget">
       <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
+       <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <property name="tabBarAutoHide">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="winter15Tab">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <attribute name="icon">
+        <iconset resource="../icons/icons.qrc">
+         <normaloff>:/icons/semester.png</normaloff>:/icons/semester.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>*Winter 15</string>
+       </attribute>
+      </widget>
       <widget class="Browser" name="browserTab">
        <attribute name="icon">
         <iconset resource="../icons/icons.qrc">
@@ -116,6 +485,12 @@
    <class>Logger</class>
    <extends>QWidget</extends>
    <header>logger.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BrowserTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>widgets/BrowserTabWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

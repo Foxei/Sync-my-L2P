@@ -22,9 +22,10 @@
 #include <QDir>
 #include <QFile>
 
-#include "parser.h"
-#include "utils.h"
+#include <QStandardItemModel>
 #include "options.h"
+#include "mysortfilterproxymodel.h"
+
 
 #define DATAFILENAME "data.xml"
 

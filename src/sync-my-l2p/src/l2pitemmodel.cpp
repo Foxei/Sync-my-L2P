@@ -5,8 +5,10 @@
 #include <QCoreApplication>
 #include <QThread>
 #include <QDebug>
+
 #include "urls.h"
 #include "options.h"
+#include "parser.h"
 
 L2pItemModel::L2pItemModel()
     : QObject()
