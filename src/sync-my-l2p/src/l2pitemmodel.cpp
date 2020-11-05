@@ -4,7 +4,7 @@
 #include <QStandardPaths>
 #include <QCoreApplication>
 #include <QThread>
-#include "qslog/QsLog.h"
+#include <QDebug>
 #include "urls.h"
 #include "options.h"
 
@@ -55,7 +55,7 @@ void L2pItemModel::loadDataFromServer()
  */
 void L2pItemModel::requestCourses()
 {
-    QLOG_DEBUG() << tr("Sende Request für Veranstaltungen");
+    qDebug() << tr("Sende Request für Veranstaltungen");
 
     QString url = options->isCurrentSemesterCheckBoxChecked() ?
                   viewAllCourseInfoByCurrentSemesterUrl :
@@ -79,7 +79,7 @@ void L2pItemModel::requestCourses()
  */
 void L2pItemModel::requestMoodleCourses()
 {
-    QLOG_DEBUG() << tr("Sende Request für Veranstaltungen von Moodle");
+    qDebug() << tr("Sende Request für Veranstaltungen von Moodle");
 
     QString url = moodleGetMyEnrolledCoursesUrl;
 
@@ -109,7 +109,7 @@ void L2pItemModel::requestMoodleCourses()
  */
 void L2pItemModel::requestFeatures()
 {
-    QLOG_DEBUG() << tr("Sende Request für aktive Features");
+    qDebug() << tr("Sende Request für aktive Features");
 
     for(auto *course : Utils::getAllCourseItems(data))
     {
@@ -154,7 +154,7 @@ void L2pItemModel::requestMoodleFiles()
         requestQueue.append(openRequest);
         numRequests++;
 
-        QLOG_DEBUG() << tr("Erstellter Moodle-Request:") << request_url;
+        qDebug() << tr("Erstellter Moodle-Request:") << request_url;
     }
 }
 
@@ -171,13 +171,13 @@ void L2pItemModel::loadDataFromFile()
 #else
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
-    QLOG_DEBUG() << tr("Vermuteter Pfad der Progammdaten: ") << dataPath;
+    qDebug() << tr("Vermuteter Pfad der Progammdaten: ") << dataPath;
 
     // Öffnen der Datei
     QFile dataFile(dataPath + "/" + DATAFILENAME );
     if(!dataFile.open(QIODevice::ReadOnly))
     {
-        QLOG_ERROR() << tr("Kann keine Daten von Festplatte laden") << ": " << dataFile.errorString();
+        qCritical() << tr("Kann keine Daten von Festplatte laden") << ": " << dataFile.errorString();
         return;
     }
 
@@ -186,7 +186,7 @@ void L2pItemModel::loadDataFromFile()
     ts.setCodec(QTextCodec::codecForName("utf-8"));
     if(ts.atEnd())
     {
-        QLOG_INFO() << tr("Geladene Datei enthält keine Daten.");
+        qInfo() << tr("Geladene Datei enthält keine Daten.");
         return;
     }
 
@@ -195,7 +195,7 @@ void L2pItemModel::loadDataFromFile()
     QString errorMessage;
     if(!dom.setContent(ts.readAll(), &errorMessage))
     {
-        QLOG_ERROR() << tr("Kann Daten von Festplatte nicht fehlerfrei einlesen: ") << errorMessage;
+        qCritical() << tr("Kann Daten von Festplatte nicht fehlerfrei einlesen: ") << errorMessage;
         return;
     }
 
@@ -328,11 +328,11 @@ void L2pItemModel::addCoursesFromReply(QNetworkReply *reply)
 {
     if(reply->error())
     {
-        QLOG_ERROR() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString();
+        qCritical() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString();
     }
     else
     {
-        QLOG_INFO() << tr("Veranstaltungen empfangen");
+        qInfo() << tr("Veranstaltungen empfangen");
         Parser::parseCourses(reply, data);
     }
 
@@ -354,11 +354,11 @@ void L2pItemModel::addMoodleCoursesFromReply(QNetworkReply *reply)
 {
     if(reply->error())
     {
-        QLOG_ERROR() << tr("Beim Abruf der Moodle-Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString();
+        qCritical() << tr("Beim Abruf der Moodle-Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString();
     }
     else
     {
-        QLOG_INFO() << tr("Moodle-Veranstaltungen empfangen");
+        qInfo() << tr("Moodle-Veranstaltungen empfangen");
         // data ist eine liste mit semestern, diese semester enthalten course
         // reply enthält eine liste mit courses
         // wird dann in json gecastet
@@ -455,19 +455,19 @@ void L2pItemModel::addFeatureFromReply(QNetworkReply *reply, Structureelement *c
         numRequests++;
     }
 
-    QLOG_DEBUG() << "Current open requests: " << replies.size();
+    qDebug() << "Current open requests: " << replies.size();
 }
 
 void L2pItemModel::addFilesFromReply(QNetworkReply *reply, Structureelement *course)
 {
-    QLOG_DEBUG() << tr("Dateiinformationen empfangen: ") << reply->url().toString();
+    qDebug() << tr("Dateiinformationen empfangen: ") << reply->url().toString();
 
     // Prüfen auf Fehler
     if (!reply->error())
     {
         Parser::parseFiles(reply, course);
 
-        QLOG_DEBUG() << tr("Dateiinformationen geparst: ") << reply->url().toString();
+        qDebug() << tr("Dateiinformationen geparst: ") << reply->url().toString();
     }
     else
     {
@@ -475,12 +475,12 @@ void L2pItemModel::addFilesFromReply(QNetworkReply *reply, Structureelement *cou
 
         if(replyMessage.contains("secure channel"))
         {
-            QLOG_DEBUG() << tr("SSL Fehler für: ") << reply->url().toString();
+            qDebug() << tr("SSL Fehler für: ") << reply->url().toString();
         }
         else
         {
             auto errorMessage = reply->errorString();
-            QLOG_ERROR() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString() % replyMessage;
+            qCritical() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString() % replyMessage;
         }
     }
 
@@ -533,14 +533,14 @@ void L2pItemModel::addFilesFromReply(QNetworkReply *reply, Structureelement *cou
 
 void L2pItemModel::addMoodleFilesFromReply(QNetworkReply *reply, Structureelement *course)
 {
-    QLOG_DEBUG() << tr("Moodle-Dateiinformationen empfangen: ") << reply->url().toString();
+    qDebug() << tr("Moodle-Dateiinformationen empfangen: ") << reply->url().toString();
 
     // Prüfen auf Fehler
     if (!reply->error())
     {
         Parser::parseMoodleFiles(reply, course);
 
-        QLOG_DEBUG() << tr("Moodle-Dateiinformationen geparst: ") << reply->url().toString();
+        qDebug() << tr("Moodle-Dateiinformationen geparst: ") << reply->url().toString();
     }
     else
     {
@@ -548,12 +548,12 @@ void L2pItemModel::addMoodleFilesFromReply(QNetworkReply *reply, Structureelemen
 
         if(replyMessage.contains("secure channel"))
         {
-            QLOG_DEBUG() << tr("SSL Fehler für: ") << reply->url().toString();
+            qDebug() << tr("SSL Fehler für: ") << reply->url().toString();
         }
         else
         {
             auto errorMessage = reply->errorString();
-            QLOG_ERROR() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString() % replyMessage;
+            qCritical() << tr("Beim Abruf der Veranstaltungen ist ein Fehler aufgetreten") % reply->errorString() % ";\n " % reply->url().toString() % replyMessage;
         }
     }
 
@@ -619,7 +619,7 @@ QNetworkRequest L2pItemModel::createApiRequest(Structureelement *course,
     QString url = l2pApiUrl % apiCommand % access % cid;
     QNetworkRequest request(QUrl(QUrl::toPercentEncoding(url, ":/?=&")));
 
-    QLOG_DEBUG() << tr("Erstellter Request:") << url;
+    qDebug() << tr("Erstellter Request:") << url;
 
     return request;
 }
@@ -632,7 +632,7 @@ void L2pItemModel::serverDataRecievedSlot(QNetworkReply *reply)
 {
     if(!replies.contains(reply))
     {
-        QLOG_ERROR() << tr("Unerwartete Serverantwort erhalten") % ":" % reply->url().toString();
+        qCritical() << tr("Unerwartete Serverantwort erhalten") % ":" % reply->url().toString();
         return;
     }
 
@@ -641,7 +641,7 @@ void L2pItemModel::serverDataRecievedSlot(QNetworkReply *reply)
     replies.remove(reply);
 
     QTime elapsed = QTime::fromMSecsSinceStartOfDay(QTime::currentTime().msecsSinceStartOfDay() - replyInfo.timeStart.msecsSinceStartOfDay());
-    QLOG_DEBUG() << "Elapsed time: " << elapsed.toString() << " for request url: " << reply->url().toString();
+    qDebug() << "Elapsed time: " << elapsed.toString() << " for request url: " << reply->url().toString();
     emit showStatusMessage(QString("Aktualisierungsfortschritt: %1 von %2 Anfragen durchgeführt").arg(numRequests-requestQueue.size()).arg(numRequests));
 
     switch (replyInfo.type)
@@ -671,7 +671,7 @@ void L2pItemModel::serverDataRecievedSlot(QNetworkReply *reply)
         break;
     default:
     {
-        QLOG_ERROR() << tr("Serverantwort wurde unbekannter Typ zugeordnet") % ":" % reply->url().toString();
+        qCritical() << tr("Serverantwort wurde unbekannter Typ zugeordnet") % ":" % reply->url().toString();
     }
     }
 
@@ -685,7 +685,7 @@ void L2pItemModel::serverDataRecievedSlot(QNetworkReply *reply)
         // Alle Dateien nach Namen sortieren
         data->sort(0);
 
-        QLOG_DEBUG() << tr("Aktualisierung beendet");
+        qDebug() << tr("Aktualisierung beendet");
         emit loadingFinished(true);
     }
 }

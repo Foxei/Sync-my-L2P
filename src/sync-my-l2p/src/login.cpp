@@ -4,7 +4,7 @@
 
 #include <QSettings>
 #include "clientId.h"
-#include "qslog/QsLog.h"
+#include <QDebug>
 #include "login.h"
 #include "utils.h"
 
@@ -35,7 +35,7 @@ void Login::init()
     refreshToken = settings.value("refreshToken", "").toString();
     settings.endGroup();
 
-    QLOG_DEBUG() << tr("Geladenes RefreshToken: ") << refreshToken;
+    qDebug() << tr("Geladenes RefreshToken: ") << refreshToken;
 }
 
 void Login::getAccess()
@@ -95,7 +95,7 @@ void Login::getUserCode()
 
 void Login::stopLoginSlot()
 {
-    QLOG_DEBUG() << tr("Stoppe Login");
+    qDebug() << tr("Stoppe Login");
 
     stopLoginTimer.stop();
 
@@ -108,7 +108,7 @@ void Login::stopLoginSlot()
 
 void Login::deleteAccess()
 {
-    QLOG_DEBUG() << tr("Lösche Zugriffsdaten.");
+    qDebug() << tr("Lösche Zugriffsdaten.");
 
     accessToken.clear();
     refreshToken.clear();
@@ -159,7 +159,7 @@ void Login::finishedSlot(QNetworkReply *reply)
 
     if(object.isEmpty())
     {
-        QLOG_ERROR() << tr("Keine lesbare Antwort erhalten.");
+        qCritical() << tr("Keine lesbare Antwort erhalten.");
         stopLoginSlot();
         return;
     }
@@ -180,7 +180,7 @@ void Login::finishedSlot(QNetworkReply *reply)
             QUrl url;
             url.setUrl(verificationUrl);
 
-            QLOG_DEBUG() << tr("Öffne Browser für Verfikation. Url: ") << url;
+            qDebug() << tr("Öffne Browser für Verfikation. Url: ") << url;
             QDesktopServices::openUrl(url);
 
             QTimer::singleShot(verification["interval"].toInt() * 1000, this, SLOT(checkForVerification()));
@@ -189,7 +189,7 @@ void Login::finishedSlot(QNetworkReply *reply)
         {
             // Zugriff gewährt
 
-            QLOG_DEBUG() << tr("Neuer Zugriff gewährt.");
+            qDebug() << tr("Neuer Zugriff gewährt.");
             refreshToken = object["refresh_token"].toString();
             accessToken = object["access_token"].toString();
 
@@ -197,16 +197,16 @@ void Login::finishedSlot(QNetworkReply *reply)
 
             stopLoginTimer.stop();
             emit newAccessToken(accessToken);
-            QLOG_DEBUG() << "Accesstoken: " << accessToken;
+            qDebug() << "Accesstoken: " << accessToken;
         }
         else if(!object["access_token"].toString().isEmpty())
         {
             // Zugriff erneuert
-            QLOG_DEBUG() << tr("Zugriff durch Refreshtoken erneuert.");
+            qDebug() << tr("Zugriff durch Refreshtoken erneuert.");
             accessToken = object["access_token"].toString();
 
             QTimer::singleShot(object["expires_in"].toInt() * 1000, this, SLOT(refreshAccess()));
-            QLOG_DEBUG() << tr("Neuer accesstoken: ") << accessToken;
+            qDebug() << tr("Neuer accesstoken: ") << accessToken;
 
             // Check if necessary scopes are given
             getTokenInfo();
@@ -214,7 +214,7 @@ void Login::finishedSlot(QNetworkReply *reply)
         else if(!object["scope"].toString().isEmpty())
         {
             auto scopes = object["scope"].toString();
-            QLOG_DEBUG() << tr("Zugriff auf folgende Scopes: ") << scopes;
+            qDebug() << tr("Zugriff auf folgende Scopes: ") << scopes;
             if(scopes.contains("moodle.rwth"))
             {
                 stopLoginTimer.stop();
@@ -231,37 +231,37 @@ void Login::finishedSlot(QNetworkReply *reply)
         }
         else
         {
-            QLOG_ERROR() << tr("Status der Antwort ok, aber Antworttyp nicht bekannt.\n") << object;
+            qCritical() << tr("Status der Antwort ok, aber Antworttyp nicht bekannt.\n") << object;
 
             stopLoginSlot();
         }
     }
     else if(status == QString("error: authorization pending."))
     {
-        QLOG_DEBUG() << status;
+        qDebug() << status;
         QTimer::singleShot(verification["interval"].toInt() * 1000, this, SLOT(checkForVerification()));
     }
     else if(status == QString("error: slow down"))
     {
-        QLOG_DEBUG() << status;
+        qDebug() << status;
         QTimer::singleShot(verification["interval"].toInt() * 1200, this, SLOT(checkForVerification()));
     }
     else if(status == QString("authorization invalid."))
     {
         // RefreshToken abgelaufen, neuen Authorisierung starten
-        QLOG_DEBUG() << status;
+        qDebug() << status;
         QTimer::singleShot(50, this, SLOT(getUserCode()));
     }
     else if(status == QString("error: refresh token invalid."))
     {
         // Ungültiger RefreshToken
-        QLOG_DEBUG() << status;
+        qDebug() << status;
 
         QTimer::singleShot(50, this, SLOT(getUserCode()));
     }
     else
     {
-        QLOG_ERROR() << tr("Unerwarteter Antwortstatus: ") << status;
+        qCritical() << tr("Unerwarteter Antwortstatus: ") << status;
 
         stopLoginSlot();
     }

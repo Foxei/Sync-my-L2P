@@ -36,9 +36,6 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 # Include all source and header files from this application
 include(src/sync-my-l2p/Sync-my-L2p.pri)
 
-# Include all source and header files from qslog as thirdparty lib
-include(src/qslog/QsLog.pri)
-
 # Include all gui files
 FORMS += \
     res/gui/autoclosedialog.ui \

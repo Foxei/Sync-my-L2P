@@ -4,10 +4,9 @@
 #include "logger.h"
 #include "ui_logger.h"
 
-#include "qslog/QsLog.h"
-#include "qslog/QsLogDest.h"
-
 #include "utils.h"
+
+#include <QDebug>
 
 Logger::Logger(QWidget *parent) :
     QWidget(parent),
@@ -18,7 +17,6 @@ Logger::Logger(QWidget *parent) :
     ui->logLevelCB->addItem(tr("Standard"));
     ui->logLevelCB->addItem(tr("Erweitert"));
 
-    QsLogging::Logger::instance().addDestination(QsLogging::DestinationFactory::MakeFunctorDestination(this, SLOT(logSlot(QString,int))));
 }
 
 Logger::~Logger()
@@ -74,13 +72,11 @@ void Logger::on_logLevelCB_currentIndexChanged(const QString &logLevel)
 {
     if(logLevel == QString(tr("Standard")))
     {
-        QsLogging::Logger::instance().setLoggingLevel(QsLogging::InfoLevel);
-        QLOG_INFO() << tr("Setze Logging auf \"Standard\".");
+        qInfo() << tr("Setze Logging auf \"Standard\".");
     }
     else if(logLevel == QString(tr("Erweitert")))
     {
-        QsLogging::Logger::instance().setLoggingLevel(QsLogging::TraceLevel);
-        QLOG_INFO() << tr("Setze Logging auf \"Erweitert\".");
+        qInfo() << tr("Setze Logging auf \"Erweitert\".");
     }
 }
 
@@ -94,18 +90,18 @@ void Logger::on_savePB_clicked()
                                                     "",
                                                     tr("Textdateien (*.txt)"));
 
-    QLOG_DEBUG() << tr("Ausgewählter Speicherort für das Logfile: ") << filepath;
+    qDebug() << tr("Ausgewählter Speicherort für das Logfile: ") << filepath;
 
     QFile file(filepath);
     if(!file.open(QIODevice::WriteOnly))
     {
-        QLOG_ERROR() << tr("Fehler beim Initialisieren des Logfiles: ") << file.errorString();
+        qCritical() << tr("Fehler beim Initialisieren des Logfiles: ") << file.errorString();
         return;
     }
 
     if(file.write(textToWrite.toLatin1()) == -1)
     {
-        QLOG_ERROR() << tr("Fehler beim Schreiben des Logfiles: ") << file.errorString();
+        qCritical() << tr("Fehler beim Schreiben des Logfiles: ") << file.errorString();
         return;
     }
 

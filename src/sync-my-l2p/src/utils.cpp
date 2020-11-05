@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "urls.h"
 
-#include "qslog/QsLog.h"
+#include <QDebug>
 
 Utils::Utils(QObject *parent) :
     QObject(parent)
@@ -115,7 +115,7 @@ void Utils::errorMessageBox(QString message, QString detailMessage)
     messageBox.setStandardButtons(QMessageBox::Ok);
     messageBox.exec();
 
-    QLOG_ERROR() << message << ": " << detailMessage;
+    qCritical() << message << ": " << detailMessage;
 }
 
 /// Erstellung einer Liste mit allen Veransaltungen
@@ -139,7 +139,7 @@ QList<Structureelement*> Utils::getAllCourseItems(QStandardItemModel *itemModel)
         }
         else
         {
-            QLOG_ERROR() << tr("Unbekanntes Element auf der Ebene der Veranstaltungen: ") << element->text();
+            qCritical() << tr("Unbekanntes Element auf der Ebene der Veranstaltungen: ") << element->text();
         }
     }
 

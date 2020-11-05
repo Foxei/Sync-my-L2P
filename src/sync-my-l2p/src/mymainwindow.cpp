@@ -18,10 +18,11 @@
 
 #include <QLocale>
 #include <QTranslator>
+#include <QDebug>
+
 #include "mymainwindow.h"
 #include "ui_mymainwindow.h"
 
-#include "qslog/QsLog.h"
 #include "utils.h"
 
 
@@ -81,8 +82,6 @@ MyMainWindow::MyMainWindow(QWidget *parent):
 void MyMainWindow::closeEvent(QCloseEvent * event)
 {
     saveSettings();
-    QsLogging::Logger::destroyInstance();
-
     event->accept();
 }
 
@@ -154,11 +153,11 @@ void MyMainWindow::checkForUpdate()
 
     if( reply->error() )
     {
-        QLOG_ERROR() << tr("Konnte Version nicht überprüfen:\n") << reply->errorString();
+        qCritical() << tr("Konnte Version nicht überprüfen:\n") << reply->errorString();
         return;
     }
     QString replyMessage(reply->readAll());
-    QLOG_DEBUG() << tr("Aktuelle Version laut Server:") << replyMessage;
+    qDebug() << tr("Aktuelle Version laut Server:") << replyMessage;
     if( replyMessage.toInt() > currentVersion )
     {
         // Aufhübschen der Versionsnummer
@@ -178,7 +177,7 @@ void MyMainWindow::checkForUpdate()
     }
     else
     {
-        QLOG_INFO() << tr("Diese Version ist aktuell") << " (" << currentVersion << ")";
+        qInfo() << tr("Diese Version ist aktuell") << " (" << currentVersion << ")";
     }
 }
 
@@ -231,7 +230,7 @@ void MyMainWindow::trayClickedSlot(QSystemTrayIcon::ActivationReason reason)
 // Installiert die neue Übersetzung, wenn eine andere Sprache gewählt wurde
 // Falls neue Sprachen ergänzt werden sollen, müssen diese hier und in der options.cpp ergänzt werden.
 void MyMainWindow::on_langCB_currentIndexChanged(const QString &lang){
-    QLOG_INFO() << tr("wechsle Sprache auf ") << lang;
+    qInfo() << tr("wechsle Sprache auf ") << lang;
 
     qApp->removeTranslator(&m_translator);
     if (lang == tr("Systemsprache"))

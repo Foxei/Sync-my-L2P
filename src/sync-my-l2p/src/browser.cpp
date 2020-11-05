@@ -12,7 +12,6 @@
 #include <QStandardPaths>
 #include <QEventLoop>
 #include "l2pitemmodel.h"
-#include "qslog/QsLog.h"
 
 Browser::Browser(QWidget *parent) :
     QWidget(parent),
@@ -126,7 +125,7 @@ void Browser::on_syncPushButton_clicked()
     QDir dir(downloadPath);
     if (!dir.exists() && !dir.mkpath(dir.path()))
     {
-        QLOG_ERROR() << tr("Kann Verzeichnis nicht erzeugen. Download abgebrochen.");
+        qCritical() << tr("Kann Verzeichnis nicht erzeugen. Download abgebrochen.");
         emit enableSignal(true);
         return;
     }
@@ -194,7 +193,7 @@ void Browser::on_syncPushButton_clicked()
         if(!directory.mkpath(directoryPath))
         {
             Utils::errorMessageBox(tr("Verzeichnis nicht erstellbar!"), tr("Kann folgendes Verzeichnis nicht erstellen: ") + directoryPath);
-            QLOG_ERROR() << tr("Verzeichnis nicht erstellbar: ") << directoryPath;
+            qCritical() << tr("Verzeichnis nicht erstellbar: ") << directoryPath;
             break;
         }
 

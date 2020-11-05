@@ -5,7 +5,7 @@
 #include <QJsonArray>
 
 #include "utils.h"
-#include "qslog/QsLog.h"
+#include <QDebug>
 
 QList<QString> Parser::parseFeatures(QNetworkReply *reply)
 {
@@ -18,13 +18,13 @@ QList<QString> Parser::parseFeatures(QNetworkReply *reply)
 
     if(object.isEmpty())
     {
-        QLOG_INFO() << tr("Featureinformationen leer bzw. nicht lesbar.") <<":"<<reply->url();
+        qInfo() << tr("Featureinformationen leer bzw. nicht lesbar.") <<":"<<reply->url();
         return activeFeatures;
     }
 
     if(!object["Status"].toBool())
     {
-        QLOG_ERROR() << tr("Status der Featureinformationen nicht ok: ") <<
+        qCritical() << tr("Status der Featureinformationen nicht ok: ") <<
                         QString(document.toJson());
         return activeFeatures;
     }
@@ -61,13 +61,13 @@ void Parser::parseCourses(QNetworkReply *reply, QStandardItemModel *itemModel)
 
     if(object.isEmpty())
     {
-        QLOG_WARN() << tr("Kursinformationen leer bzw. nicht lesbar.");
+        qWarning() << tr("Kursinformationen leer bzw. nicht lesbar.");
         return;
     }
 
     if(!object["Status"].toBool())
     {
-        QLOG_ERROR() << tr("Status der Kursinformationen nicht ok: ") <<
+        qCritical() << tr("Status der Kursinformationen nicht ok: ") <<
                         QString(document.toJson());
         return;
     }
@@ -91,7 +91,7 @@ void Parser::parseCourses(QNetworkReply *reply, QStandardItemModel *itemModel)
 
         Utils::getSemesterItem(itemModel, semester)->appendRow(newCourse);
 
-        QLOG_DEBUG() << tr("Veranstaltung") << title << "(" << cid << tr(") hinzugefügt.");
+        qDebug() << tr("Veranstaltung") << title << "(" << cid << tr(") hinzugefügt.");
     }
 }
 
@@ -104,13 +104,13 @@ void Parser::parseMoodleCourses(QNetworkReply *reply, QStandardItemModel *itemMo
 
     if(object.isEmpty())
     {
-        QLOG_WARN() << tr("Moodle-Kursinformationen leer bzw. nicht lesbar.");
+        qWarning() << tr("Moodle-Kursinformationen leer bzw. nicht lesbar.");
         return;
     }
 
     if(object["StatusCode"].toInt() != 0)
     {
-        QLOG_ERROR() << tr("Status der Moodle-Kursinformationen nicht ok: ") <<
+        qCritical() << tr("Status der Moodle-Kursinformationen nicht ok: ") <<
                         QString(document.toJson());
         return;
     }
@@ -136,7 +136,7 @@ void Parser::parseMoodleCourses(QNetworkReply *reply, QStandardItemModel *itemMo
 
         Utils::getSemesterItem(itemModel, semester)->appendRow(newCourse);
 
-        QLOG_DEBUG() << tr("Moodle-Veranstaltung") << title << "(" << cid << tr(") hinzugefügt.");
+        qDebug() << tr("Moodle-Veranstaltung") << title << "(" << cid << tr(") hinzugefügt.");
     }
 }
 
@@ -173,7 +173,7 @@ void Parser::parseFiles(QNetworkReply *reply, Structureelement* course)
     }
     else
     {
-        QLOG_ERROR() << tr("Antwort auf unbekannten Request erhalten: ") << url;
+        qCritical() << tr("Antwort auf unbekannten Request erhalten: ") << url;
         return;
     }
 
@@ -186,7 +186,7 @@ void Parser::parseFiles(QNetworkReply *reply, Structureelement* course)
 
     if(object.isEmpty())
     {
-        QLOG_DEBUG() << tr("Kursinformationen leer bzw. nicht lesbar.");
+        qDebug() << tr("Kursinformationen leer bzw. nicht lesbar.");
         return;
     }
 
@@ -197,7 +197,7 @@ void Parser::parseFiles(QNetworkReply *reply, Structureelement* course)
             return;
         }
 
-        QLOG_ERROR() << tr("Status der Kursinformationen nicht ok: \n") <<
+        qCritical() << tr("Status der Kursinformationen nicht ok: \n") <<
                         url << "\n" <<
                         QString(document.toJson());
         return;
@@ -550,13 +550,13 @@ void Parser::parseMoodleFiles(QNetworkReply *reply, Structureelement* course)
 
     if(object.isEmpty())
     {
-        QLOG_DEBUG() << tr("Moodle-Kursinformationen leer bzw. nicht lesbar.");
+        qDebug() << tr("Moodle-Kursinformationen leer bzw. nicht lesbar.");
         return;
     }
 
     if(object["StatusCode"].toInt() != 0)
     {
-        QLOG_ERROR() << tr("Status der Moodle-Kursinformationen nicht ok: \n") <<
+        qCritical() << tr("Status der Moodle-Kursinformationen nicht ok: \n") <<
                         "\n" <<
                         QString(document.toJson());
         return;
@@ -564,7 +564,7 @@ void Parser::parseMoodleFiles(QNetworkReply *reply, Structureelement* course)
 
     if(object["IsError"].toBool())
     {
-        QLOG_ERROR() << tr("Moodle-Kursinformationen enthalten einen Fehler: \n") <<
+        qCritical() << tr("Moodle-Kursinformationen enthalten einen Fehler: \n") <<
                         "\n" <<
                         QString(document.toJson());
         return;

@@ -21,8 +21,6 @@
 
 #include <QTime>
 
-#include "qslog/QsLog.h"
-
 FileDownloader::FileDownloader(int itemNumber,
                                QWidget *parent) :
     QDialog(parent, Qt::FramelessWindowHint),
@@ -47,7 +45,7 @@ FileDownloader::~FileDownloader()
 
 int FileDownloader::startNextDownload(QString fileName, QString courseName, QString filePath, QUrl fileUrl, int itemNummer, int itemSize, int time)
 {
-    QLOG_DEBUG() << tr("Starte Download von") << fileUrl.url();
+    qDebug() << tr("Starte Download von") << fileUrl.url();
 
     // Anpassen der Labels
     ui->progressLabel->setText(QString("Datei %1/%2").arg(itemNummer+1).arg(itemNumber));
@@ -142,7 +140,7 @@ void FileDownloader::finishedSlot()
         }
         else
         {
-            QLOG_ERROR() << tr("Beim Download der Datei %1 ist ein Fehler aufgetreten.").arg(output.fileName()) <<
+            qCritical() << tr("Beim Download der Datei %1 ist ein Fehler aufgetreten.").arg(output.fileName()) <<
                             ": " << errorString % "; " % reply->readAll();
         }
 
